@@ -32,7 +32,7 @@ Read about different [Load Balancing concepts](https://www.nginx.com/resources/g
 
 Let us take a look at the updated solution architecture with an LB added on top of Web Servers (for simplicity let us assume it is a software L7 Application LB, for example – [Apache](https://httpd.apache.org/docs/2.4/mod/mod_proxy_balancer.html), [NGINX](https://docs.nginx.com/nginx/admin-guide/load-balancer/http-load-balancer/) or [HAProxy](http://www.haproxy.org))
 
-![3 Tier Web Application Architecture](../images/3Tierwebapp-Archi.png)
+![3 Tier Web Application Architecture](images/3Tierwebapp-Archi.png)
 
 In this project we will enhance our **Tooling Website** solution by adding a Load Balancer to disctribute traffic between Web Servers and allow users to access our website using a single URL.
 
@@ -51,7 +51,7 @@ Make sure that you have following servers installed and configured within Projec
 2. One MySQL DB Server (based on Ubuntu 20.04)
 3. One RHEL8 NFS server
 
-![Prerequisites for Project 8](../images/prereq-proj8.png)
+![Prerequisites for Project 8](images/prereq-proj8.png)
 
 ## CONFIGURE APACHE AS A LOAD BALANCER
 
@@ -59,11 +59,11 @@ Configure Apache As A Load Balancer
 
 1. Create an Ubuntu Server 20.04 EC2 instance and name it Project-8-apache-lb, so your EC2 list will look like this:
 
-![Project-8-apache-lb](../images/project8-apachelb.png)
+![Project-8-apache-lb](images/project8-apachelb.png)
 
 2. Open TCP port 80 on Project-8-apache-lb by creating an Inbound Rule in Security Group.
 
-![TCP PORT](../images/TCP-PORT.png)
+![TCP PORT](images/TCP-PORT.png)
 
 3. Install Apache Load Balancer on Project-8-apache-lb server and configure it to point traffic coming to LB to both Web Servers:
 
@@ -115,7 +115,7 @@ sudo vi /etc/apache2/sites-available/000-default.conf
 sudo systemctl restart apache2
 ```
 
-![Configure Load balancing](../images/Configure-lb.png)
+![Configure Load balancing](images/Configure-lb.png)
 
 [bytraffic](https://httpd.apache.org/docs/2.4/mod/mod_lbmethod_bytraffic.html)balancing method will distribute incoming load between your Web Servers according to current traffic load. We can control in which proportion the traffic must be distributed by <mark>loadfactor</mark> parameter.
 
@@ -125,7 +125,7 @@ You can also study and try other methods, like: [bybusyness](https://httpd.apach
 
 `http://<Load-Balancer-Public-IP-Address-or-Public-DNS-Name>/index.php`
 
-![Load balancer DNS name index.php](../images/loaderbalancer-indexphp.png)
+![Load balancer DNS name index.php](images/loaderbalancer-indexphp.png)
 
 **Note:** If in the Project-7 you mounted <mark>/var/log/httpd/</mark> from your Web Servers to the NFS server – unmount them and make sure that each Web Server has its own log directory.
 
@@ -156,7 +156,7 @@ sudo vi /etc/hosts
 <WebServer1-Private-IP-Address> Web1
 <WebServer2-Private-IP-Address> Web2
 ```
-![Edit etc host file](../images/etc-hosts.png)
+![Edit etc host file](images/etc-hosts.png)
 
 Now you can update your LB config file with those names instead of IP addresses.
 
@@ -165,7 +165,7 @@ BalancerMember http://Web1:80 loadfactor=5 timeout=1
 BalancerMember http://Web2:80 loadfactor=5 timeout=1
 ``
 
-![Update LB config](../images/update-lbconfig.png)
+![Update LB config](images/update-lbconfig.png)
 
 You can try to curl your Web Servers from LB locally curl http://Web1 or curl http://Web2 – it shall work.
 Remember, this is only internal configuration and it is also local to your LB server, these names will neither be ‘resolvable’ from other servers internally nor from the Internet.
@@ -174,9 +174,9 @@ Remember, this is only internal configuration and it is also local to your LB se
 Targed Architecture
 Now your set up looks like this:
 
-![Targed Architecture](../images/load-balancer.png)
+![Targed Architecture](images/load-balancer.png)
 
 Congratulations!
 You have just implemented a Load balancing Web Solution for your DevOps team.
 
-![GreatJob](../images/great-job.png)
+![GreatJob](images/great-job.png)
